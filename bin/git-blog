@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/git-blog/storage'
+require_relative '../lib/git-blog/configuration'
+require_relative '../lib/git-blog/workflow'
+
+workflow = GitBlog::Workflow.new
+if ARGV.length == 1 && ARGV[0] == "setup"
+	workflow.setup
+else
+	workflow.start_blogging ARGV
+end
+
+# workflow = GitBlog::Workflow.new
+# workflow.setup

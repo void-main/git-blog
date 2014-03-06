@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require "./storage"
+require_relative "./storage"
 
 module GitBlog
 	class Configuration
