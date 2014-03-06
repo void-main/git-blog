@@ -10,7 +10,7 @@ conf.read
 
 # Create a new blog file
 time = DateTime.now.strftime("%F")
-title = [time, "blogging-with-git-blog"].join("-")
+title = [time, "blogging-with-git-blog.markdown"].join("-")
 path = File.join conf.blog_path, title
 
 File.open(path, "w") do |file|
