@@ -23,6 +23,7 @@ end
 
 module GitBlog
 	class Workflow
+
 		# Setup basic configuration
 		def setup
 			conf = GitBlog::Configuration.new
@@ -72,8 +73,21 @@ module GitBlog
 
 			hooks_path = File.join current_path, ".git", "hooks"
 			source_template_path = GitBlog::Storage.prepare_commit_msg_template_path
+
+			script = <<EOF
+#!/usr/bin/env ruby
+
+$commit_file_path = ARGV[0]
+
+content = <<EOC
+#{File.read(source_template_path)}
+EOC
+
+File.write($commit_file_path, content)
+EOF
+
 			target_template_path = File.join hooks_path, "prepare-commit-msg"
-			FileUtils.cp source_template_path, target_template_path
+			File.open(target_template_path, "w") { |file| file.write script }
 			FileUtils.chmod 0755, target_template_path
 
 			source_commit_script_path = GitBlog::Storage.commit_msg_script_path
@@ -82,7 +96,7 @@ module GitBlog
 			FileUtils.chmod 0755, target_commit_script_path
 
 			# Pass to git commit
-			puts %x(git commit #{cli_params.join(" ")})
+			exec("git commit #{cli_params.join(" ")}")
 
 			# Clean up
 			FileUtils.rm target_template_path
