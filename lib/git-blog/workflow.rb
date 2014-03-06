@@ -12,7 +12,7 @@ class String
 		full_path = File.expand_path self
 		if File.directory? full_path
 			Dir.chdir full_path do
-				system "git rev-parse > /dev/null 2>&1"
+				system "git rev-parse --show-toplevel > /dev/null 2>&1"
 				ret = $?.exitstatus == 0
 			end
 		end
@@ -71,7 +71,8 @@ module GitBlog
 				setup
 			end
 
-			hooks_path = File.join current_path, ".git", "hooks"
+			git_root_path = %x(git rev-parse --show-toplevel).strip
+			hooks_path = File.join git_root_path, ".git", "hooks"
 			source_template_path = GitBlog::Storage.prepare_commit_msg_template_path
 
 			script = <<EOF
