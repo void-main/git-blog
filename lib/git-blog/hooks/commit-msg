@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+$msg_path = ARGV[0]
+
+puts File.read($msg_path)
