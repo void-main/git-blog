@@ -96,12 +96,12 @@ EOF
 			FileUtils.chmod 0755, target_commit_script_path
 
 			# Pass to git commit
-			exec("git commit #{cli_params.join(" ")}")
+			system("git commit #{cli_params.join(" ")}")
 
 			# Clean up
 			FileUtils.rm target_template_path
 			FileUtils.rm target_commit_script_path
-			end
+		end
 	end
 end
 
